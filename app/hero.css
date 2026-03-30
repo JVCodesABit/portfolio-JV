@@ -1,0 +1,48 @@
+.hero-image-container {
+  position: relative;
+  /* allow layout classes (like w-1/2) to control width, but cap the size */
+  width: 100%;
+  max-width: 840px; /* cap width */
+  height: 80vh; /* reduce height */
+  max-height: 580px; /* absolute cap */
+  overflow: hidden;
+  background-color: #000;
+}
+
+.hero-image {
+  position: absolute;
+  inset: 0;
+  background-image: url('/hero.jpeg');
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+/* Dark overlay that makes image ~10% visible by default */
+.hero-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* default: 80% black overlay so image is ~20% visible */
+  background: rgba(0,0,0,0.8);
+  pointer-events: none;
+  z-index: 2;
+  transition: background 180ms ease, opacity 180ms ease;
+}
+
+/* On hover, create a smooth, soft transparent circular hole under the cursor to reveal that part */
+.hero-image-container:hover .hero-image::after {
+  /*
+    Softer radial gradient stops to blend the edge without blurring the image.
+    - center fully transparent
+    - keep inner transparency a bit larger, then ramp gradually to overlay
+    - no backdrop blur (we're not blurring the image itself)
+  */
+  background: radial-gradient(circle 160px at var(--x, 50%) var(--y, 50%),
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0) 35%,
+    rgba(0,0,0,0.12) 55%,
+    rgba(0,0,0,0.32) 75%,
+    rgba(0,0,0,0.8) 100%);
+}
+  
