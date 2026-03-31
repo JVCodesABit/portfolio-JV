@@ -1,5 +1,8 @@
 {
   "routes": [
+    { "src": "^/_next/.*", "dest": "/$0" },
+    { "src": "^/images/.*", "dest": "/$0" },
+    { "src": "^/favicon.ico$", "dest": "/favicon.ico" },
     { "src": "/(.*)", "dest": "/" }
   ]
 }
