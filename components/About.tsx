@@ -84,7 +84,10 @@ function TypewriterBox() {
   }, [inView, full])
 
   return (
-    <div ref={ref} className="relative border border-accent/15 bg-surface/60 backdrop-blur-sm p-6 md:p-8">
+    <div
+      ref={ref}
+      className="relative border border-accent/15 bg-surface/60 backdrop-blur-sm p-6 md:p-8 w-[420px] md:w-[560px] h-[382px] md:h-[382px] overflow-hidden"
+    >
       {[
         'top-0 left-0 border-t-2 border-l-2',
         'top-0 right-0 border-t-2 border-r-2',
@@ -93,7 +96,7 @@ function TypewriterBox() {
       ].map((cls, i) => (
         <span key={i} className={`absolute w-4 h-4 border-accent ${cls}`} />
       ))}
-      <pre className="font-mono text-[0.72rem] md:text-[0.8rem] text-accent/70 leading-[1.9] whitespace-pre-wrap">
+      <pre className="font-mono text-[0.72rem] md:text-[0.8rem] text-accent/70 leading-[1.9] h-full overflow-auto whitespace-pre">
         {displayed}
       </pre>
     </div>
