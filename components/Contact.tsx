@@ -241,7 +241,7 @@ export default function Contact() {
 
             {/* CTA */}
             <motion.a
-              href="mailto:jagratkumar09@gmail.com"
+              href="mailto:me@jvcodes.tech"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               whileHover={{ scale: 1.03 }}

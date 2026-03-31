@@ -43,7 +43,7 @@ export default function Nav() {
       </ul>
 
       <a
-        href="mailto:jagrat.varshney.ug24@nsut.ac.in"
+        href="mailto:me@jvcodes.tech"
         className="hidden md:block font-mono text-[0.7rem] tracking-[0.15em] uppercase border border-accent/40 text-accent px-4 py-2 hover:bg-accent hover:text-bg transition-all duration-300 cursor-none btn-clip"
       >
         Hire Me
