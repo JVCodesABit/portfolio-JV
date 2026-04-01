@@ -86,7 +86,7 @@ function TypewriterBox() {
   return (
     <div
       ref={ref}
-      className="relative border border-accent/15 bg-surface/60 backdrop-blur-sm p-6 md:p-8 w-[420px] md:w-[560px] h-[382px] md:h-[382px] overflow-hidden"
+      className="relative border border-accent/15 bg-surface/60 backdrop-blur-sm p-6 md:p-8 w-full max-w-[420px] md:max-w-[560px] h-[382px] overflow-hidden"
     >
       {[
         'top-0 left-0 border-t-2 border-l-2',

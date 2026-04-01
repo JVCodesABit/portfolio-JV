@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const letterVariants = {
   hidden: { opacity: 0, y: 80, rotateX: -90 },
@@ -22,6 +22,56 @@ const fadeUp = (delay: number) => ({
   animate: { opacity: 1, y: 0 },
   transition: { delay, duration: 0.7, ease: [0.33, 1, 0.68, 1] },
 })
+
+function TypingEffect() {
+  const phrases = ['CS @ NSUT', 'AI Specialization', 'Full-Stack'];
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [text, setText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentPhrase = phrases[phraseIndex];
+    const typingSpeed = 100;
+    const deletingSpeed = 50;
+    const delayAfterTyping = 5500;
+
+    const handleTyping = () => {
+      if (isDeleting) {
+        if (text.length > 0) {
+          setText(current => current.substring(0, current.length - 1));
+        } else {
+          setIsDeleting(false);
+          setPhraseIndex(current => (current + 1) % phrases.length);
+        }
+      } else {
+        if (text.length < currentPhrase.length) {
+          setText(current => currentPhrase.substring(0, current.length + 1));
+        } else {
+          setTimeout(() => setIsDeleting(true), delayAfterTyping);
+        }
+      }
+    };
+
+    const timeout = setTimeout(handleTyping, isDeleting ? deletingSpeed : typingSpeed);
+    return () => clearTimeout(timeout);
+  }, [text, isDeleting, phraseIndex, phrases]);
+
+  return (
+    <motion.p
+      {...fadeUp(0.4)}
+      className="font-mono text-accent text-xs tracking-[0.35em] uppercase mb-6 h-4" // Set a fixed height
+    >
+      ↳ {text}
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 1, 0] }}
+        transition={{ duration: 0.8, repeat: Infinity }}
+        className="inline-block w-2 h-3 bg-accent ml-1 relative"
+        style={{ bottom: '-2px' }}
+      />
+    </motion.p>
+  );
+}
 
 function GlitchName() {
   const name = 'JAGRAT'
@@ -100,9 +150,7 @@ export default function Hero() {
         {/* Accent glow */}
         <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
 
-        <motion.p {...fadeUp(0.4)} className="font-mono text-accent text-xs tracking-[0.35em] uppercase mb-6">
-          ↳ CS @ NSUT · AI Specialization · Full-Stack
-        </motion.p>
+        <TypingEffect />
 
         <GlitchName />
 
