@@ -18,6 +18,7 @@ const WINS = [
     ring: 99.77,          // percentile
     size: 'hero',         // bento: spans big
     icon: '',
+    link: 'https://www.resulthubnsut.com/student/2024UCA1946',
   },
   {
     id: 'jee-advanced',
@@ -260,14 +261,40 @@ function HeroCard({ win }: { win: typeof WINS[0] }) {
               >
                 {win.badge}
               </div>
-              <p className="font-mono text-[0.72rem] text-muted mt-1">{win.detail}</p>
+              <p className="font-mono text-[0.72rem] text-white/70 mt-1">{win.detail}</p>
             </div>
             <RadialRing value={win.ring} color={win.color} size={90} />
           </div>
 
-          <p className="font-mono text-[0.6rem] text-muted/40 mt-4 tracking-widest">
-            click to flip ↩
-          </p>
+          <div className="flex items-center justify-between mt-4">
+            <p className="font-mono text-[0.6rem] text-muted/40 tracking-widest">
+              click to flip ↩
+            </p>
+            {win.link && (
+              <a
+                href={win.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="font-mono text-[0.6rem] tracking-widest uppercase px-3 py-1.5 border transition-all duration-300 hover:scale-105 relative z-20 cursor-pointer"
+                style={{
+                  color: win.color,
+                  borderColor: `${win.color}40`,
+                  background: `${win.color}0a`,
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = `${win.color}20`;
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = win.color;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = `${win.color}0a`;
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = `${win.color}40`;
+                }}
+              >
+                View Results ↗
+              </a>
+            )}
+          </div>
         </div>
 
         {/* BACK */}
@@ -287,7 +314,7 @@ function HeroCard({ win }: { win: typeof WINS[0] }) {
             {win.badge}
           </div>
           <p className="font-body font-bold text-xl mt-2">{win.label}</p>
-          <p className="font-mono text-[0.75rem] text-muted mt-2 leading-relaxed max-w-[280px]">
+          <p className="font-mono text-[0.75rem] text-white/70 mt-2 leading-relaxed max-w-[280px]">
             {win.detail}
           </p>
           <div
@@ -361,7 +388,7 @@ function WideCard({ win, index }: { win: typeof WINS[0]; index: number }) {
         <h3 className="font-display text-[1.8rem] md:text-[2.4rem] leading-none mt-1 group-hover:text-white transition-colors">
           {win.label}
         </h3>
-        <p className="font-mono text-[0.7rem] text-muted mt-1">{win.detail}</p>
+        <p className="font-mono text-[0.7rem] text-white/70 mt-1">{win.detail}</p>
       </div>
 
       {/* Badge */}
@@ -447,7 +474,7 @@ function MediumCard({ win, index }: { win: typeof WINS[0]; index: number }) {
         <h3 className="font-display text-xl md:text-2xl mt-1 group-hover:text-white transition-colors duration-300">
           {win.label}
         </h3>
-        <p className="font-mono text-[0.68rem] text-muted mt-1">{win.detail}</p>
+        <p className="font-mono text-[0.68rem] text-white/70 mt-1">{win.detail}</p>
       </div>
 
       {/* Bottom animated line */}
@@ -493,7 +520,7 @@ function SmallCard({ win, index }: { win: typeof WINS[0]; index: number }) {
       <div className="relative z-10">
         <div className="font-display text-2xl" style={{ color: win.color }}>{win.badge}</div>
         <div className="font-display text-lg leading-tight mt-0.5 group-hover:text-white transition-colors">{win.label}</div>
-        <p className="font-mono text-[0.62rem] text-muted mt-1 leading-relaxed">{win.detail}</p>
+        <p className="font-mono text-[0.62rem] text-white/70 mt-1 leading-relaxed">{win.detail}</p>
       </div>
     </motion.div>
   )
