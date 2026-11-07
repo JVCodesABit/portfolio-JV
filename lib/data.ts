@@ -42,6 +42,8 @@ export const CHAPTERS: Chapter[] = [
     place: { x: 0.69, y: 0.47, s: 0.72 }, placeM: { x: 0.5, y: 0.46, s: 0.86 } },
   { id: 'about', label: 'About', bg: INK, fg: BONE, fill: '#FF5B26', shape: 'flower', spin: 0.12,
     place: { x: 0.8, y: 0.5, s: 0.56 }, placeM: { x: 0.8, y: 0.15, s: 0.4 } },
+  { id: 'work', label: 'Projects', bg: BONE, fg: INK, fill: '#FF5B26', shape: 'down',
+    place: { x: 0.87, y: 0.3, s: 0.34 }, placeM: { x: 0.84, y: 0.17, s: 0.26 } },
   { id: 'orbis', label: 'Orbis', bg: '#FF5B26', fg: INK, fill: INK, shape: 'circle', orbit: true,
     images: ['/work/orbis-0.webp', '/work/orbis-1.webp', '/work/orbis-2.webp'], focal: [0.5, 0.42],
     video: '/work/video/orbis.webm', videoFocal: [0.5, 0.38],
@@ -102,7 +104,7 @@ export const PROJECTS: Project[] = [
   {
     video: '/work/video/orbis.webm',
     id: 'orbis', index: '01', name: ['Orbis'], kind: 'Personal operating system', when: '2026 — now',
-    line: 'Everything you keep, in one orbit. It reads what you upload, files it into the right part of your life, and answers questions with the source attached.',
+    line: 'Everything you keep, in one orbit. It files your documents and answers questions with the source attached.',
     stats: [{ n: '8', l: 'file formats read' }, { n: '600k', l: 'vault key iterations' }, { n: '0', l: 'vault bytes shown to AI' }],
     stack: ['Next.js 16', 'Supabase', 'pgvector', 'Gemini', 'Groq', 'BullMQ', 'Capacitor'],
     live: 'https://orbis.jvcodes.tech',
@@ -119,7 +121,7 @@ export const PROJECTS: Project[] = [
   {
     video: '/work/video/tmf.webm',
     id: 'takemeforward', index: '02', name: ['TakeMe', 'Forward'], kind: 'Placement prep tracker', when: '2026 — now',
-    line: 'Placement prep that moves you one step at a time. Log what you solve, and it turns that into what to do today.',
+    line: 'Placement prep that moves you one step at a time. Log what you solve, and it tells you what to do today.',
     stats: [{ n: '5', l: 'revisions picked daily' }, { n: '3', l: 'judges synced' }, { n: '26wk', l: 'activity heatmap' }],
     stack: ['Next.js 15', 'Prisma', 'Supabase Postgres', 'NextAuth', 'Groq', 'Playwright', 'Vitest'],
     live: 'https://takemeforward.jvcodes.tech',
@@ -170,7 +172,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'sahay', index: '05', name: ['Sahay'], kind: 'AI co-founder for Indian MSMEs · Team project', when: 'Mar — Apr 2026',
-    line: 'Built at Vihan Hackathon. It gives a small business owner the tools of a CFO and a business lawyer, in Hindi or English, using the business’s own data.',
+    line: 'A CFO and a business lawyer for small businesses, in Hindi or English. Built at Vihan Hackathon.',
     stats: [{ n: '7+', l: 'modules shipped' }, { n: '63M', l: 'MSMEs in India' }, { n: '2', l: 'languages' }],
     stack: ['Next.js', 'TypeScript', 'Prisma', 'OpenAI APIs'],
     code: 'https://github.com/zyph-parth/sahay',

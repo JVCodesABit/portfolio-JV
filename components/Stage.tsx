@@ -9,7 +9,7 @@ export function Stage() {
 
   useEffect(() => {
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
-    const lenis = new Lenis({ lerp: reduced ? 1 : 0.09, smoothWheel: !reduced, autoRaf: true })
+    const lenis = new Lenis({ lerp: reduced ? 1 : 0.09, smoothWheel: !reduced, autoRaf: true, anchors: { duration: 1.8 } })
     stage.lenis = lenis as unknown as typeof stage.lenis
 
     const root = document.documentElement
@@ -17,7 +17,7 @@ export function Stage() {
       root.style.setProperty('--nav-fg', c.fg)
       root.style.setProperty('--nav-bg', c.bg)
       // Long text sections scroll under the nav, so give it a fade to sit on.
-      root.toggleAttribute('data-nav-solid', ['about', 'more', 'wins', 'stack'].includes(c.id))
+      root.toggleAttribute('data-nav-solid', ['about', 'work', 'more', 'wins', 'stack'].includes(c.id))
       document.querySelector('meta[name="theme-color"]')?.setAttribute('content', c.bg)
       const el = document.getElementById('nav-index')
       if (el) el.textContent = `${String(i + 1).padStart(2, '0')}/${CHAPTERS.length} ${c.label}`

@@ -8,13 +8,14 @@ export const N = 280
 
 export type ShapeName =
   | 'blob' | 'circle' | 'flower' | 'scallop' | 'star' | 'square'
-  | 'J' | 'V' | 'arrow' | 'pin' | 'stairs' | 'twin' | 'play' | 'plus'
+  | 'J' | 'V' | 'arrow' | 'down' | 'pin' | 'stairs' | 'twin' | 'play' | 'plus'
   | 'bubble' | 'hex' | 'page' | 'envelope' | 'wave' | 'crown' | 'podium' | 'shield'
 
 const PATHS: Partial<Record<ShapeName, [d: string, smooth: number]>> = {
   J: ['M560 90 H810 V640 C810 830 680 920 500 920 C320 920 200 820 170 650 L400 610 C412 685 440 715 495 715 C540 715 560 685 560 630 Z', 3],
   V: ['M110 90 H370 L500 640 L630 90 H890 L640 910 H360 Z', 3],
   arrow: ['M80 360 H490 V110 L930 500 L490 890 V640 H80 Z', 10],
+  down: ['M360 70 H640 V500 H920 L500 930 L80 500 H360 Z', 10],
   pin: ['M500 50 C730 50 860 230 860 410 C860 630 620 810 500 960 C380 810 140 630 140 410 C140 230 270 50 500 50 Z', 2],
   stairs: ['M70 930 V650 H340 V400 H620 V80 H930 V930 Z', 9],
   twin: ['M500 300 A 270 270 0 1 1 500 700 A 270 270 0 1 1 500 300 Z', 6],

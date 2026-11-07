@@ -100,6 +100,12 @@ export function CaseStudy() {
         <h2 className="case-name case-a">{p.name.join('')}</h2>
         <p className="case-problem case-a">{p.problem}</p>
 
+        <ul className="project-stats case-stats case-a">
+          {p.stats.map((st) => (
+            <li key={st.l}><strong>{st.n}</strong><span className="mono">{st.l}</span></li>
+          ))}
+        </ul>
+
         <div className="case-grid case-a">
           {p.built.map((b) => (
             <article key={b.h}>

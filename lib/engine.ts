@@ -98,6 +98,7 @@ class Stage {
   private stiffMul = 1
   private presses: number[] = []
   private speedTick = 0
+  private orbitCh = CHAPTERS.find((c) => c.orbit)!
   private introFill = 0
   private cycleIdx = CHAPTERS.findIndex((c) => c.cycle)
   private cycleStep = -1
@@ -801,7 +802,7 @@ class Stage {
 
     this.drawCycleLabel(c, i, next, t)
 
-    if (orbitAmt > 0.01 && this.caseAmt < 0.3) this.drawOrbit(c, this.placeOf(CHAPTERS[2]), orbitAmt * (1 - this.caseAmt * 3.3), CHAPTERS[2].fg)
+    if (orbitAmt > 0.01 && this.caseAmt < 0.3) this.drawOrbit(c, this.placeOf(this.orbitCh), orbitAmt * (1 - this.caseAmt * 3.3), this.orbitCh.fg)
   }
 
   private activeImage(active: number, scroll: number): string | null {
@@ -815,7 +816,8 @@ class Stage {
       if (v && mediaReady(v) && !v.paused) return ch.video
     }
     if (ch.images.length === 1) return ch.images[0]
-    const span = Math.max(1, this.chH[active] - this.vh)
+    const span = this.chH[active] - this.vh
+    if (span < 80) return ch.images[0]
     const p = clamp((scroll - this.chTop[active]) / span)
     return ch.images[Math.min(ch.images.length - 1, Math.floor(p * ch.images.length))]
   }
@@ -892,7 +894,7 @@ class Stage {
     const cx = pl.x * this.vw
     const cy = pl.y * this.vh
     const rot = -0.32
-    const rings = [[0.6, 0.18, 0.34, 3.6], [0.66, 0.27, -0.21, 2.4]] as const
+    const rings = [[0.62, 0.2, 0.34, 3.6]] as const
     c.save()
     c.translate(cx, cy)
     c.rotate(rot)

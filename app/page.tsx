@@ -66,6 +66,24 @@ export default function Home() {
           </div>
         </section>
 
+        <section id="work" className="chapter work" style={vars('work')}>
+          <div data-vis className="wrap work-wrap">
+            <p className="mono eyebrow">{PROJECTS.length} things I’ve built</p>
+            <h2 className="work-title">Projects</h2>
+            <ol className="work-list">
+              {PROJECTS.map((p) => (
+                <li key={p.id} data-morph={CHAPTERS.find((c) => c.id === p.id)!.shape}>
+                  <a href={`#${p.id}`}>
+                    <span className="mono">{p.index}</span>
+                    <strong>{p.name.join('')}</strong>
+                    <span className="work-kind">{p.kind}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
         {PROJECTS.map((p) => (
           <ProjectChapter key={p.id} project={p} style={vars(p.id)} />
         ))}
