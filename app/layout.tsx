@@ -23,7 +23,14 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.jvcodes.tech'),
   title: 'Jagrat Varshney',
   description,
-  icons: '/favicon.png',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
   keywords: ['Jagrat Varshney', 'Full Stack Developer', 'NSUT', 'Portfolio', 'Next.js', 'React', 'AI'],
   openGraph: {
     title: 'Jagrat Varshney',
