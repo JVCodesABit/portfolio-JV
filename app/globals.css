@@ -48,6 +48,48 @@ main { transition: opacity 0.35s ease; }
 [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity 0.9s var(--ease), transform 1.1s var(--ease); }
 [data-reveal].in, html:not(.js) [data-reveal] { opacity: 1; transform: none; }
 
+/* intro: a showreel seen through the wordmark */
+.ix {
+  position: fixed; inset: 0; z-index: 45; display: none; overflow: hidden; pointer-events: none; isolation: isolate;
+  background: #000; font-size: 15vw; transition: opacity 0.28s ease;
+  animation: ix-failsafe 0s 12s forwards; /* if scripts never run, don't trap the page */
+}
+.js .ix { display: block; }
+.no-intro .ix { display: none; }
+.ix.out { opacity: 0; }
+@keyframes ix-failsafe { to { visibility: hidden; } }
+.ix-film {
+  position: absolute; inset: 0; background-size: cover; background-repeat: no-repeat; will-change: transform;
+}
+/* Black multiplied over the film hides it; white shows it. So the letters are windows. */
+.ix-matte { position: absolute; inset: 0; display: grid; place-items: center; background: #000; mix-blend-mode: multiply; overflow: hidden; }
+.ix-mark {
+  display: flex; align-items: baseline; white-space: nowrap; line-height: 1; font-weight: 780; letter-spacing: -0.03em; color: #fff;
+  font-variation-settings: "wght" 780, "wdth" 80, "opsz" 96; visibility: hidden; will-change: transform;
+}
+.ix.live .ix-mark { visibility: visible; }
+.ix-l { display: inline-block; will-change: transform; }
+.ix-dot { display: inline-block; flex: none; width: 0.2em; height: 0.2em; margin: 0 0.045em; border-radius: 50%; background: #FF5B26; will-change: transform; }
+.ix-card {
+  position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.6vh; visibility: hidden; text-align: center;
+  background: #000; padding: 0 var(--gutter);
+}
+.ix.live .ix-card { visibility: visible; }
+.ix-big {
+  display: block; white-space: nowrap; font-weight: 800; line-height: 0.9; letter-spacing: -0.012em; will-change: transform;
+  font-variation-settings: "wght" 800, "wdth" 78, "opsz" 96;
+}
+.ix-sub { font-weight: 600; font-size: clamp(19px, 2.8vw, 42px); line-height: 1.15; letter-spacing: -0.015em; }
+.ix-hud {
+  position: absolute; inset: 0; color: #EFEBE1; opacity: 0; transition: opacity 0.12s linear;
+  padding: 16px var(--gutter) 18px; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto auto; row-gap: 10px;
+}
+.ix.live .ix-hud { opacity: 1; }
+.ix-time { font-variant-numeric: tabular-nums; text-align: right; }
+.ix-label { grid-row: 3; grid-column: 1 / -1; font-size: clamp(14px, 1.5vw, 20px); white-space: pre; min-height: 1.5em; }
+.ix-bar { grid-row: 4; grid-column: 1 / -1; height: 1px; background: rgba(239, 235, 225, 0.28); position: relative; }
+.ix-head { position: absolute; inset: -0.5px 0; background: #FF5B26; transform-origin: 0 50%; transform: scaleX(0); }
+
 /* nav */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 40;
@@ -56,7 +98,7 @@ main { transition: opacity 0.35s ease; }
   color: var(--nav-fg);
   transition: color 0.45s ease, opacity 0.3s ease;
 }
-.case-open .nav, .game-open .nav { opacity: 0; pointer-events: none; }
+.case-open .nav, .game-open .nav, .js:not(.ready) .nav { opacity: 0; pointer-events: none; }
 .nav::before {
   content: ''; position: absolute; inset: 0 0 -22px; z-index: -1; pointer-events: none; opacity: 0;
   background: linear-gradient(var(--nav-bg) 62%, transparent); transition: opacity 0.4s ease;

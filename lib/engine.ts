@@ -12,6 +12,7 @@ const STIFF = 88
 const DAMP = 10.5
 const STEP = 1 / 120
 const STAGGER = 0.38
+const EMBER = hex('#FF5B26')
 
 type Media = HTMLImageElement | HTMLVideoElement
 const mediaSize = (m: Media): [number, number] =>
@@ -97,6 +98,7 @@ class Stage {
   private stiffMul = 1
   private presses: number[] = []
   private speedTick = 0
+  private introFill = 0
   private cycleIdx = CHAPTERS.findIndex((c) => c.cycle)
   private cycleStep = -1
   private cycleClock = 0
@@ -146,7 +148,7 @@ class Stage {
     const skipIntro = this.reduced || window.scrollY > 80
     this.intro = skipIntro ? 2 : 0
     this.seed(skipIntro)
-    if (skipIntro) document.documentElement.classList.add('ready')
+    if (skipIntro) document.documentElement.classList.add('ready', 'no-intro')
 
     addEventListener('resize', this.onResize)
     addEventListener('pointermove', this.onMove, { passive: true })
@@ -174,6 +176,21 @@ class Stage {
     this.focusOn = false
   }
   closeCase() { this.caseId = null }
+
+  /** The wordmark's dot becomes the shape: same place, same size, same colour. */
+  releaseIntro(x: number, y: number, diameter: number) {
+    if (this.intro === 2) return
+    const c = this.shapes.circle.pts
+    for (let i = 0; i < N * 2; i += 2) {
+      this.p[i] = x + c[i] * diameter
+      this.p[i + 1] = y + c[i + 1] * diameter
+    }
+    this.v.fill(0)
+    this.intro = 2
+    this.introFill = 1
+    document.documentElement.classList.add('ready')
+    this.measureLetters()
+  }
 
   startTakeover(t: Takeover) {
     this.takeover = t
@@ -239,7 +256,7 @@ class Stage {
   }
 
   private seed(atHero: boolean) {
-    const src = atHero ? this.currentTargets() : this.place('J', { x: 0.5, y: 0.5, s: 0.34 })
+    const src = atHero ? this.currentTargets() : this.place('circle', { x: 0.5, y: 0.5, s: 0.01 })
     this.p.set(src)
     this.v.fill(0)
   }
@@ -366,7 +383,7 @@ class Stage {
     if (this.reduced || !this.hasPointer) return
     const y = scrollY
     this.letters = Array.from(document.querySelectorAll<HTMLElement>('[data-flex] .ltr')).map((el) => {
-      const r = el.getBoundingClientRect()
+      const r = el.parentElement!.getBoundingClientRect()
       return { el, x: r.left + r.width / 2, y: r.top + r.height / 2 + y, w: r.height }
     })
   }
@@ -587,17 +604,11 @@ class Stage {
     const breathe = this.reduced ? 0 : this.mobile ? 2.5 : 4
     const tm = this.time
 
-    // Intro: J, then V, then let go.
+    // Held still until the wordmark hands over its dot. The timeout is only a safety net.
     let introPts: Float32Array | null = null
     if (this.intro < 2) {
-      const since = (performance.now() - this.mountedAt) / 1000
-      if (since < 0.6) introPts = this.placeJ()
-      else if (since < 1.25) introPts = this.placeV()
-      else {
-        this.intro = 2
-        document.documentElement.classList.add('ready')
-        this.measureLetters()
-      }
+      if (performance.now() - this.mountedAt > 6000) this.releaseIntro(this.vw / 2, this.vh / 2, 20)
+      else introPts = this.p
     }
 
     for (let v = 0; v < N; v++) {
@@ -639,11 +650,6 @@ class Stage {
       out[k + 1] = y
     }
   }
-
-  private jPts?: Float32Array
-  private vPts?: Float32Array
-  private placeJ() { return this.jPts ?? (this.jPts = this.place('J', { x: 0.5, y: 0.5, s: 0.34 })) }
-  private placeV() { return this.vPts ?? (this.vPts = this.place('V', { x: 0.5, y: 0.5, s: 0.34 })) }
 
   private simulate(dt: number) {
     const { p, v, target } = this
@@ -723,6 +729,7 @@ class Stage {
     const b = this.colors[next]
     c.fillStyle = `rgb(${a.bg[0]},${a.bg[1]},${a.bg[2]})`
     c.fillRect(0, 0, vw, vh)
+    if (this.intro < 2) return
 
     const [cx, cy] = this.centroid()
 
@@ -761,6 +768,10 @@ class Stage {
       const r = a.fill.map((v, x) => v + (b.fill[x] - v) * fm)
       this.caseCur = this.caseCur.map((v, x) => v + (this.caseFill[x] - v) * (1 - Math.exp(-dt * 8)))
       fillStyle = mix(r, this.caseCur, m)
+    }
+    if (this.introFill > 0) {
+      fillStyle = mix(EMBER, a.fill, smooth(1 - this.introFill))
+      this.introFill = Math.max(0, this.introFill - dt * 1.7)
     }
     c.fillStyle = fillStyle
     this.tracePath(c)
@@ -832,7 +843,13 @@ class Stage {
   }
 
   private drawCover(c: CanvasRenderingContext2D, l: Layer) {
-    const [bx, by, bw, bh] = l.box
+    // Bleed past the shape's resting edge, so a wobble never uncovers the fill behind.
+    const bleedX = l.box[2] * 0.14
+    const bleedY = l.box[3] * 0.14
+    const bx = l.box[0] - bleedX
+    const by = l.box[1] - bleedY
+    const bw = l.box[2] + bleedX * 2
+    const bh = l.box[3] + bleedY * 2
     const pad = 1.08
     const [iw, ih] = mediaSize(l.img)
     const s = Math.max((bw * pad) / iw, (bh * pad) / ih)

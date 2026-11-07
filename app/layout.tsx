@@ -44,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning className={`${display.variable} ${mono.variable}`}>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        <script dangerouslySetInnerHTML={{ __html: "var r=document.documentElement;r.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)r.classList.add('no-intro')" }} />
       </head>
       <body>{children}</body>
     </html>

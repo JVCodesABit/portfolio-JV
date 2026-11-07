@@ -1,5 +1,6 @@
 import { Flex } from '@/components/Flex'
 import { Game } from '@/components/Game'
+import { Intro } from '@/components/Intro'
 import { LiquidWords } from '@/components/LiquidWords'
 import { Nav } from '@/components/Nav'
 import { ProjectChapter } from '@/components/ProjectChapter'
@@ -17,6 +18,7 @@ export default function Home() {
   return (
     <>
       <Stage />
+      <Intro />
       <Nav />
 
       {/* Shared by every liquid word swap */}
