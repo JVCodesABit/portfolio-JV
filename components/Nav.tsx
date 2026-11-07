@@ -1,53 +1,51 @@
 'use client'
-
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { NAV_LINKS } from '@/lib/data'
+import { stage } from '@/lib/engine'
+import { CHAPTERS } from '@/lib/data'
+import { SoundToggle } from './SoundToggle'
 
-export default function Nav() {
-  const [scrolled, setScrolled] = useState(false)
+export function Nav() {
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', handler, { passive: true })
-    return () => window.removeEventListener('scroll', handler)
-  }, [])
+    if (open) stage.lenis?.stop(); else stage.lenis?.start()
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    addEventListener('keydown', onKey)
+    return () => removeEventListener('keydown', onKey)
+  }, [open])
+
+  const go = (e: React.MouseEvent, id: string) => {
+    e.preventDefault()
+    setOpen(false)
+    stage.lenis?.start()
+    const el = document.getElementById(id)
+    if (el) stage.lenis?.scrollTo(el, { duration: 2, force: true })
+  }
 
   return (
-    <motion.nav
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.3, duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
-      className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-8 md:px-16 py-5 transition-all duration-500"
-      style={{
-        backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        background: scrolled ? 'rgba(2,4,8,0.85)' : 'transparent',
-        borderBottom: scrolled ? '1px solid rgba(0,255,224,0.08)' : '1px solid transparent',
-      }}
-    >
-      <a href="#hero" className="font-display text-2xl text-accent tracking-widest cursor-none">
-        JV
-      </a>
-
-      <ul className="hidden md:flex gap-10 list-none">
-        {NAV_LINKS.map((link) => (
-          <li key={link.href}>
-            <a
-              href={link.href}
-              className="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-muted hover:text-accent transition-colors duration-300 cursor-none"
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      <a
-        href="mailto:me@jvcodes.tech"
-        className="hidden md:block font-mono text-[0.7rem] tracking-[0.15em] uppercase border border-accent/40 text-accent px-4 py-2 hover:bg-accent hover:text-bg transition-all duration-300 cursor-none btn-clip"
-      >
-        Hire Me
-      </a>
-    </motion.nav>
+    <>
+      <header className="nav">
+        <a className="nav-mark" href="#hero" onClick={(e) => go(e, 'hero')} aria-label="Back to top">JV</a>
+        <span id="nav-index" className="mono nav-index" aria-hidden>01/{CHAPTERS.length} Hello</span>
+        <div className="nav-right">
+          <SoundToggle />
+          <button className="mono nav-btn" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-controls="menu">
+            {open ? 'Close' : 'Menu'}
+          </button>
+        </div>
+      </header>
+      <nav id="menu" className={`menu ${open ? 'open' : ''}`} aria-hidden={!open} aria-label="Sections">
+        <ol>
+          {CHAPTERS.map((c, i) => (
+            <li key={c.id} style={{ transitionDelay: open ? `${80 + i * 28}ms` : '0ms' }}>
+              <a href={`#${c.id}`} tabIndex={open ? 0 : -1} onClick={(e) => go(e, c.id)}>
+                <span className="mono">{String(i + 1).padStart(2, '0')}</span>
+                {c.label}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </>
   )
 }

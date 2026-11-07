@@ -1,86 +1,26 @@
-# Jagrat Varshney — Portfolio (Next.js)
+# jvcodes.tech
 
-A blazing-fast, animation-heavy portfolio built with **Next.js 14**, **Framer Motion**, **React Three Fiber**, and **Lenis** smooth scroll.
+Portfolio of Jagrat Varshney. One looping path of 280 spring-driven points carries the whole site: it becomes each project's shape, floods the page with the next colour, and grows into the case studies.
 
-## Stack
-
-| Layer | Library |
-|---|---|
-| Framework | Next.js 14 (App Router) |
-| Animations | Framer Motion 11 |
-| 3D / WebGL | React Three Fiber + Drei |
-| Smooth Scroll | Lenis |
-| Styling | Tailwind CSS |
-| Language | TypeScript |
-
-## Features
-
-- 🎯 **Custom spring cursor** — dot + trailing ring with Framer Motion `useSpring`
-- 🌌 **3D particle field** — React Three Fiber with mouse-reactive camera
-- 🔤 **Letter-by-letter hero animation** — with glitch effect
-- 🧲 **Magnetic contact buttons** — pull toward cursor
-- 🃏 **3D tilt skill cards** — `useMotionValue` + `useTransform`
-- 🔢 **Animated number counters** — triggered on scroll
-- ⌨️ **Typewriter code block** — scroll-triggered
-- 🎞️ **Curtain loader** — splits open with `AnimatePresence`
-- 📜 **Lenis smooth scroll** — butter-smooth inertia
-- 🔊 **Framer Motion marquee** — infinite ticker
-- 🌗 **Noise texture overlay** — film grain via CSS
-
-## Quick Start
+## Run it
 
 ```bash
-# 1. Install dependencies
 npm install
-
-# 2. Run development server
 npm run dev
-
-# 3. Open in browser
-open http://localhost:3000
 ```
 
-## Deploy to Vercel (30 seconds)
+## Where things live
 
-```bash
-# Install Vercel CLI
-npm i -g vercel
+| Path | What it holds |
+|---|---|
+| `lib/data.ts` | All content and each section's colours, shape and images. Start here to edit the site. |
+| `lib/shapes.ts` | The shape library. Add an SVG path to `PATHS`, then use its name in `lib/data.ts`. |
+| `lib/engine.ts` | The canvas engine: springs, morphing, colour flood, images inside the shape. |
+| `components/` | The nav, case studies, liquid words and physics pit. |
+| `public/work/` | Screenshots and photos, drawn inside the shape. |
 
-# Deploy
-vercel
-```
+Any element can morph the shape on hover or focus with `data-morph="shapeName"`, plus `data-morph-img="/work/x.webp"` to show an image inside it.
 
-Or drag & drop this folder at [vercel.com/new](https://vercel.com/new).
+Videos in `public/work/video/` play inside the shapes, with the images as a fallback. Sound (`lib/sound.ts`) is synthesised and off by default. The hidden game (`lib/game.ts`) opens with five quick presses on the shape, or by typing "play".
 
-## Project Structure
-
-```
-jagrat-nextjs/
-├── app/
-│   ├── layout.tsx       # Root layout, fonts, metadata
-│   ├── page.tsx         # Page composition
-│   └── globals.css      # Tailwind + custom animations
-├── components/
-│   ├── CustomCursor.tsx  # Spring cursor
-│   ├── Loader.tsx        # Curtain loader
-│   ├── Nav.tsx           # Fixed nav
-│   ├── ParticleField.tsx # R3F 3D scene
-│   ├── Hero.tsx          # Hero + glitch name
-│   ├── MarqueeTicker.tsx # Infinite marquee
-│   ├── About.tsx         # Stats + typewriter
-│   ├── Skills.tsx        # 3D tilt cards
-│   ├── Projects.tsx      # Spotlight cards
-│   ├── Achievements.tsx  # Sweep rows
-│   ├── Contact.tsx       # Magnetic links
-│   ├── Footer.tsx        # Footer
-│   └── SmoothScroll.tsx  # Lenis wrapper
-├── lib/
-│   └── data.ts           # All your portfolio data
-├── tailwind.config.ts
-├── next.config.mjs
-└── tsconfig.json
-```
-
-## Customisation
-
-All your data lives in **`lib/data.ts`** — edit it to add projects, skills, achievements, and contact links. No other files need to change.
+With `prefers-reduced-motion`, springs, intro, physics, video autoplay and liquid text are off, and colours crossfade instead of flooding.

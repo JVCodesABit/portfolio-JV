@@ -1,40 +1,52 @@
-import type { Metadata } from 'next'
-import { Bebas_Neue, Space_Mono, Syne } from 'next/font/google'
+import type { Metadata, Viewport } from 'next'
+import { Bricolage_Grotesque, DM_Mono } from 'next/font/google'
 import './globals.css'
-import './hero.css'
-import SmoothScroll from '@/components/SmoothScroll'
 
-const bebasNeue = Bebas_Neue({
-  weight: '400',
+const display = Bricolage_Grotesque({
   subsets: ['latin'],
-  variable: '--font-bebas',
+  variable: '--font-display',
+  axes: ['wdth', 'opsz'],
+  display: 'swap',
 })
 
-const spaceMono = Space_Mono({
-  weight: ['400', '700'],
+const mono = DM_Mono({
   subsets: ['latin'],
-  variable: '--font-space-mono',
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
 })
 
-const syne = Syne({
-  subsets: ['latin'],
-  variable: '--font-syne',
-})
+const description =
+  'Full-stack developer and CSE (AI) student at NSUT, Delhi. I build products end to end: Orbis, TakeMeForward, GoTogethr, MBAEdge and Sahay.'
 
 export const metadata: Metadata = {
-  title: 'Jagrat Varshney — NSUT',
+  metadataBase: new URL('https://www.jvcodes.tech'),
+  title: 'Jagrat Varshney',
+  description,
   icons: '/favicon.png',
-  description:
-    'Full-Stack Developer & CS (AI) student at NSUT. A product obsessed coder with a knack for building sleek, performant web apps. Passionate about turning complex problems into elegant solutions and crafting seamless user experiences.',
   keywords: ['Jagrat Varshney', 'Full Stack Developer', 'NSUT', 'Portfolio', 'Next.js', 'React', 'AI'],
+  openGraph: {
+    title: 'Jagrat Varshney',
+    description,
+    url: 'https://www.jvcodes.tech',
+    type: 'website',
+    images: ['/work/portrait.webp'],
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#EFEBE1',
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${bebasNeue.variable} ${spaceMono.variable} ${syne.variable} font-body bg-bg text-[#e8f0fe] overflow-x-hidden`}>
-        <SmoothScroll>{children}</SmoothScroll>
-      </body>
+    <html lang="en" suppressHydrationWarning className={`${display.variable} ${mono.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
+      <body>{children}</body>
     </html>
   )
 }
